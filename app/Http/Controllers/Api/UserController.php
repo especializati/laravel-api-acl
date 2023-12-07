@@ -8,6 +8,7 @@ use App\Http\Requests\Api\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
@@ -42,7 +43,10 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        if (!$user = $this->userRepository->findById($id)) {
+            return response()->json(['message' => 'user not found'], Response::HTTP_NOT_FOUND);
+        }
+        return new UserResource($user);
     }
 
     /**
