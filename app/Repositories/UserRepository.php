@@ -53,6 +53,6 @@ class UserRepository
         if (!$user = $this->findById($id)) {
             return false;
         }
-        return $+
+        return $user->delete();
     }
 }
