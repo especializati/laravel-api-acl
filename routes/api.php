@@ -9,12 +9,14 @@ Route::post('/me', [AuthApiController::class, 'me'])->name('auth.me')->middlewar
 Route::post('/logout', [AuthApiController::class, 'logout'])->name('auth.logout')->middleware('auth:sanctum');
 Route::post('/auth', [AuthApiController::class, 'auth'])->name('auth.login');
 
-Route::apiResource('/permissions', PermissionController::class);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('/permissions', PermissionController::class);
 
-Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
-Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-Route::post('/users', [UserController::class, 'store'])->name('users.store');
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+});
 
 Route::get('/', fn () => response()->json(['message' => 'ok']));
