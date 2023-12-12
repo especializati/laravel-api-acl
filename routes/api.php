@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Auth\AuthApiController;
 use App\Http\Controllers\Api\PermissionController;
+use App\Http\Controllers\Api\PermissionUserController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,6 +13,7 @@ Route::post('/auth', [AuthApiController::class, 'auth'])->name('auth.login');
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('/permissions', PermissionController::class);
 
+    Route::post('/users/{user}/permissions-sync', [PermissionUserController::class, 'syncPermissionsOfUser'])->name('users.permissions.sync');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
